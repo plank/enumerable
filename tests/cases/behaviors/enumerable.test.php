@@ -35,7 +35,7 @@ class EnumBehaviorTest extends CakeTestCase {
 	 * @var array
 	 * @access public
 	 */
-	public $fixtures = array('app.enumerable');
+	public $fixtures = array('plugin.enumerable.enumerable');
 
 	/**
 	 * Start test case
