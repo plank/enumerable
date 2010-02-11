@@ -1,44 +1,63 @@
 <?php
+/**
+ * Enumerable: Because ENUMS can suck, and humans like words.
+ *
+ * @copyright     Copyright 2010, Plank Design (http://plankdesign.com)
+ * @license       http://opensource.org/licenses/mit-license.php The MIT License
+ */
 
 /**
- * Enum Model behavior
+ * Enumerable Behavior
  *
- * Allows you to fake MySQL ENUM types
+ * ENUM column types are not supported by CakePHP for a variety of reasons.
+ * However, there are occasions where you want exactly what an ENUM column type would provide.
  *
- * @package wowwee
- * @subpackage wowwee.models.behaviors
+ * The Enumerable behavior attempts to bridge this gap by providing some transparent
+ * rewriting of fields marked as enumerable when returned in `Model::find()` calls.
+ *
+ * A very typical use-case for Enumerable would be for a `gender` field in a user profile
+ * model. Without Enumerable, you have three choices:
+ *
+ * 1) use ENUMs, which are not supported in model schemas, but some workarounds
+ * exists (e.g. custom Datasources).
+ *
+ * 2) Define the column type as an `integer` or `char(1)`, and use class constants in the
+ * model, e.g. Profile::MALE would map to `0` or `m`. This could be viable for some, but
+ * requires some mental bookeeping.
+ *
+ * See the README for example configurations and how the method behaviors can be used
+ * to make your ENUMerable fields simpler to manage.
+ *
  */
 class EnumerableBehavior extends ModelBehavior {
 
 	/**
-	 * Behavior settings, indexed by model attachment
+	 * Behavior settings, indexed by model.
 	 *
-	 * @var array
-	 * @access public
+	 * @var array Settings for this behavior, indexed by Model name or alias.
 	 */
 	public $settings = array();
 
 	/**
-	 * Setup behavior configurations
+	 * Setup behavior configurations.
 	 *
-	 * @param object $Model Model object reference
-	 * @param array $settings Behavior configuration settings
+	 * @param object $Model Model object reference.
+	 * @param array $settings Behavior configuration settings.
 	 * @return void
 	 */
 	public function setup(&$Model, $settings = array()) {
 		if (empty($settings)) {
 			trigger_error('You must define at least one Enumerable column', E_USER_WARNING);
 		}
-
 		$this->settings[$Model->name] = $settings;
 	}
 
 	/**
-	 * Behavior afterFind callback
+	 * Behavior afterFind callback.
 	 *
-	 * @param object $Model Model object reference
-	 * @param array $results Results of find operation
-	 * @return array Modified result set
+	 * @param object $Model Model object reference.
+	 * @param array $results Results of find operation.
+	 * @return array Modified result set.
 	 */
 	public function afterFind(&$Model, $results) {
 		$name = $Model->name;
@@ -55,23 +74,20 @@ class EnumerableBehavior extends ModelBehavior {
 				}
 			}
 		}
-
 		return $results;
 	}
 
 	/**
-	 * Returns the enumerable options for specified field
+	 * Returns the enumerable options for specified field.
 	 *
-	 * @param object $Model Model object reference
-	 * @param string $field Enumerable field to query
-	 * @return array Enumerable fields, or an empty array if invalid field name,
-	 * @access public
+	 * @param object $Model Model object reference.
+	 * @param string $field Enumerable field to query.
+	 * @return array Enumerable fields, or an empty array if invalid field name.
 	 */
 	public function enumerate(&$Model, $field) {
 		if (!isset($this->settings[$Model->name][$field])) {
 			return array();
 		}
-
 		return $this->settings[$Model->name][$field];
 	}
 

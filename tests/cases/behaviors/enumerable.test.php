@@ -3,8 +3,6 @@
 /**
  * Enumerable behavior test model
  *
- * @package wowwee
- * @subpackage wowwee.tests.behaviors
  */
 class Enumerable extends CakeTestModel {
 
@@ -24,8 +22,6 @@ class Enumerable extends CakeTestModel {
 /**
  * Enumerable behavior test class
  *
- * @package wowwee
- * @subpackage wowwee.tests.behaviors
  */
 class EnumBehaviorTest extends CakeTestCase {
 
