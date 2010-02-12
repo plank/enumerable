@@ -1,4 +1,10 @@
 <?php
+/**
+ * Enumerable: Because ENUMS can suck, and humans like words.
+ *
+ * @copyright     Copyright 2010, Plank Design (http://plankdesign.com)
+ * @license       http://opensource.org/licenses/mit-license.php The MIT License
+ */
 
 class EnumerableFixture extends CakeTestFixture {
 
